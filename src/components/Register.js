@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import React, { useState } from "react";
 import { useSnackbar } from "notistack";
-import { config } from "../ipConfig.json";
+import { config } from "../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
-jest.mock('axios');
+
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
@@ -20,44 +20,38 @@ const Register = () => {
   });
 
   const handleRegister = async () => {
+   
     if (!validateInput(formData)) {
       return; // Stop further execution if validation fails
     }
 
     try {
       setLoading(true); // Set loading to true before API call
-      it(`${config.workspaceIp}/api/v1/auth/register`, async () => {
-          // Arrange
-          render(<Register />);
-      
-          // Mocking a successful POST request
-          axios.post.mockResolvedValueOnce({ status: 201, data: {} });
-      
-          // Act
-          fireEvent.click(screen.getByText('Register Now'));
-      
-          // Assert
-          await waitFor(() => {
-            expect(axios.post).toHaveBeenCalled();
-          });
-        });
-      
-        // Other test cases...
+      var formObj={
+        "username":formData.username,
+        "password":formData.password
       }
-
-    }, catch (error) {
+      // Make your Axios POST request here
+      const response = await axios.post(`${config.endpoint}/auth/register`, formObj);
+      console.log('response', response);
+      if (response.status === 201) {
+        // Registration successful
+        enqueueSnackbar('Registered successfully', { variant: 'success' });
+        // Optionally, you can redirect the user to another page
+      }
+    } catch (error) {
       if (error.response && error.response.status === 400) {
         // Registration error with specific message
-        enqueueSnackbar(error.response.data.message, { variant: "error" });
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
       } else {
         // Other errors
         enqueueSnackbar(
-          "Something went wrong. Check that the backend is running, reachable, and returns valid JSON.",
-          { variant: "error" }
+          'Something went wrong. Check that the backend is running, reachable, and returns valid JSON.',
+          { variant: 'error' }
         );
       }
     } finally {
-      setLoading(false); // Set loading to false after API call is complete
+      setLoading(false); // Set loading to false after the API call is complete
     }
   };
 
