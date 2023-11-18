@@ -1,1 +1,5 @@
-{"workspaceIp": "localhost"}
+{
+    "config": {
+      "workspaceIp": "http://15.207.16.195:8082/"
+    }
+  }

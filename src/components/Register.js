@@ -1,62 +1,103 @@
-import { Button, CircularProgress, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { Link } from 'react-router-dom';
 import axios from "axios";
-import { useSnackbar } from "notistack";
 import React, { useState } from "react";
-import { config } from "../App";
+import { useSnackbar } from "notistack";
+import { config } from "../ipConfig.json";
+import CircularProgress from "@mui/material/CircularProgress";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
-
+jest.mock('axios');
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
 
+  const handleRegister = async () => {
+    if (!validateInput(formData)) {
+      return; // Stop further execution if validation fails
+    }
 
-  // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
-  /**
-   * Definition for register handler
-   * - Function to be called when the user clicks on the register button or submits the register form
-   *
-   * @param {{ username: string, password: string, confirmPassword: string }} formData
-   *  Object with values of username, password and confirm password user entered to register
-   *
-   * API endpoint - "POST /auth/register"
-   *
-   * Example for successful response from backend for the API call:
-   * HTTP 201
-   * {
-   *      "success": true,
-   * }
-   *
-   * Example for failed response from backend for the API call:
-   * HTTP 400
-   * {
-   *      "success": false,
-   *      "message": "Username is already taken"
-   * }
-   */
-  const register = async (formData) => {
+    try {
+      setLoading(true); // Set loading to true before API call
+      it(`${config.workspaceIp}/api/v1/auth/register`, async () => {
+          // Arrange
+          render(<Register />);
+      
+          // Mocking a successful POST request
+          axios.post.mockResolvedValueOnce({ status: 201, data: {} });
+      
+          // Act
+          fireEvent.click(screen.getByText('Register Now'));
+      
+          // Assert
+          await waitFor(() => {
+            expect(axios.post).toHaveBeenCalled();
+          });
+        });
+      
+        // Other test cases...
+      }
+
+    }, catch (error) {
+      if (error.response && error.response.status === 400) {
+        // Registration error with specific message
+        enqueueSnackbar(error.response.data.message, { variant: "error" });
+      } else {
+        // Other errors
+        enqueueSnackbar(
+          "Something went wrong. Check that the backend is running, reachable, and returns valid JSON.",
+          { variant: "error" }
+        );
+      }
+    } finally {
+      setLoading(false); // Set loading to false after API call is complete
+    }
   };
 
-  // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
-  /**
-   * Validate the input values so that any bad or illegal values are not passed to the backend.
-   *
-   * @param {{ username: string, password: string, confirmPassword: string }} data
-   *  Object with values of username, password and confirm password user entered to register
-   *
-   * @returns {boolean}
-   *    Whether validation has passed or not
-   *
-   * Return false if any validation condition fails, otherwise return true.
-   * (NOTE: The error messages to be shown for each of these cases, are given with them)
-   * -    Check that username field is not an empty value - "Username is a required field"
-   * -    Check that username field is not less than 6 characters in length - "Username must be at least 6 characters"
-   * -    Check that password field is not an empty value - "Password is a required field"
-   * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
-   * -    Check that confirmPassword field has the same value as password field - Passwords do not match
-   */
   const validateInput = (data) => {
+    const { username, password, confirmPassword } = data;
+  
+    if (!username) {
+      enqueueSnackbar("Username is a required field", { variant: "warning" });
+      return false;
+    }
+  
+    if (username.length < 6) {
+      enqueueSnackbar("Username must be at least 6 characters", { variant: "warning" });
+      return false;
+    }
+  
+    if (!password) {
+      enqueueSnackbar("Password is a required field", { variant: "warning" });
+      return false;
+    }
+  
+    if (password.length < 6) {
+      enqueueSnackbar("Password must be at least 6 characters", { variant: "warning" });
+      return false;
+    }
+  
+    if (password !== confirmPassword) {
+      enqueueSnackbar("Passwords do not match", { variant: "warning" });
+      return false;
+    }
+  
+    return true; // Validation passed
+  };
+  
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
@@ -78,16 +119,18 @@ const Register = () => {
             name="username"
             placeholder="Enter Username"
             fullWidth
+            onChange={handleInputChange}
           />
-          <TextField
+          <TextField 
             id="password"
             variant="outlined"
             label="Password"
             name="password"
             type="password"
-            helperText="Password must be atleast 6 characters length"
+            helperText="Password must be at least 6 characters length"
             fullWidth
-            placeholder="Enter a password with minimum 6 characters"
+            placeholder="Enter a password with a minimum of 6 characters"
+            onChange={handleInputChange}
           />
           <TextField
             id="confirmPassword"
@@ -96,15 +139,29 @@ const Register = () => {
             name="confirmPassword"
             type="password"
             fullWidth
+            onChange={handleInputChange}
           />
-           <Button className="button" variant="contained">
-            Register Now
-           </Button>
+          <Stack spacing={2} className="form">
+            {/* Existing input fields */}
+            <Button
+              className="button"
+              variant="contained"
+              onClick={handleRegister}
+              disabled={loading} // Disable the button when loading
+            >
+              {loading ? (
+                <CircularProgress size={24} color="inherit" /> // Show loader if loading
+              ) : (
+                "Register Now"
+              )}
+            </Button>
+            {/* Existing code... */}
+          </Stack>
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="#">
+            <Link className="link" to="/login">
               Login here
-             </a>
+            </Link>
           </p>
         </Stack>
       </Box>
