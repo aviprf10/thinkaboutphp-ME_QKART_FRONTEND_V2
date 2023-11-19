@@ -1,6 +1,6 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from "axios";
 import React, { useState } from "react";
 import { useSnackbar } from "notistack";
@@ -11,6 +11,7 @@ import Header from "./Header";
 import "./Register.css";
 
 const Register = () => {
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ const Register = () => {
       if (response.status === 201) {
         // Registration successful
         enqueueSnackbar('Registered successfully', { variant: 'success' });
+        history.push('/login');
         // Optionally, you can redirect the user to another page
       }
     } catch (error) {
@@ -135,9 +137,9 @@ const Register = () => {
             fullWidth
             onChange={handleInputChange}
           />
-          <Stack spacing={2} className="form">
+          {/* <Stack spacing={2} className="form"> */}
             {/* Existing input fields */}
-            <Button
+            {/* <Button
               className="button"
               variant="contained"
               onClick={handleRegister}
@@ -148,9 +150,23 @@ const Register = () => {
               ) : (
                 "Register Now"
               )}
-            </Button>
+            </Button> */}
             {/* Existing code... */}
-          </Stack>
+          {/* </Stack> */}
+          {loading ? (
+            <Stack alignItems="center">
+              <CircularProgress />
+            </Stack>
+          ) : (
+            <Button
+            className="button"
+            variant="contained"
+            onClick={handleRegister}
+            disabled={loading} // Disable the button when loading
+            >
+              Register Now
+            </Button>
+          )}
           <p className="secondary-action">
             Already have an account?{" "}
             <Link className="link" to="/login">
