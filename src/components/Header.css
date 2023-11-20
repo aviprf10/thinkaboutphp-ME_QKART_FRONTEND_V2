@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    height: 5vh;
+    height: 15vh;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
     background: #ffffff;
 }
@@ -25,3 +25,40 @@
         display: block;
     }
 }
+
+.header-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .searchDesktop {
+    position: relative;
+    margin-left: auto; /* Adjust the margin as needed */
+    width: 100%; /* Take full width on mobile */
+  }
+  
+  .search-bar {
+    padding: 10px;
+    width: 350px; /* Increase the width as needed */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #00845c; /* Change the icon color */
+    cursor: pointer;
+  }
+  
+  /* Center the search bar on desktop */
+  @media (min-width: 768px) {
+    .searchDesktop {
+      margin-left: 0px;
+      margin-right: auto;
+      max-width: 600px; /* Adjust the max-width as needed */
+    }
+  }

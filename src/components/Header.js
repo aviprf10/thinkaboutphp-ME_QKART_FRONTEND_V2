@@ -2,7 +2,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Avatar, Button, Stack} from "@mui/material";
 import Box from "@mui/material/Box";
 import { useHistory } from "react-router-dom";
-import React,{useState} from "react";
+import React from "react";
 import "./Header.css";
 
 const Header = ({
@@ -12,14 +12,14 @@ const Header = ({
   const history = useHistory();
   const userLoggedIn = localStorage.getItem("token") ? true : false;
   const userName = localStorage.getItem("username");
-  const [forDeskTop, setForDeskTop] = useState(true);
+  //const [forDeskTop, setForDeskTop] = useState(true);
 
   const backToExplore = () => {
     history.push("/", { from: "Header" });
   };
   return (
     <Box>
-      <Box className="header">
+      <Box className="header"> 
         <Box className="header-title">
           <img src="logo_light.svg" alt="QKart-icon"></img>
         </Box>
@@ -75,7 +75,7 @@ const ProductHeader = (props) => {
           <Avatar alt={props.username} src="avatar.png" />
         </Box>
         <Box className="username-text">{props.username}</Box>
-        <Button className="button" onClick={onLogOut}>
+        <Button variant="outlined" onClick={onLogOut}>
           logout
         </Button>
       </Stack>
@@ -83,10 +83,10 @@ const ProductHeader = (props) => {
   } else {
     return (
       <Box>
-        <Button className="button" onClick={onLogin}>
+        <Button variant="outlined" onClick={onLogin}>
           Login
         </Button>
-        <Button className="button" variant="contained" onClick={onRegister}>
+        <Button variant="contained" onClick={onRegister} style={{ marginLeft: '10px' }}>
           Register
         </Button>
       </Box>
