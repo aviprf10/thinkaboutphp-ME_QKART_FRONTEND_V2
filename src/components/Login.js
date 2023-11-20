@@ -9,7 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Footer from './Footer';
 import Header from './Header';
 import { config } from '../App';
-
+ 
 const Login = () => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
