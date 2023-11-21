@@ -31,6 +31,7 @@ const Products = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
     const performAPICall = async () => {
       try {
         setLoading(true);
@@ -39,7 +40,9 @@ const Products = () => {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-        setProducts(data);
+        if (isMounted) {
+          setProducts(data);
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -49,7 +52,9 @@ const Products = () => {
 
     performAPICall();
 
-    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // const dummyProduct = {
@@ -66,24 +71,31 @@ const Products = () => {
       const response = await fetch(
         `${config.endpoint}/products/search?value=${encodeURIComponent(text)}`
       );
-
+  
       if (!response.ok) {
         throw new Error('Error fetching data');
       }
-
+  
       const data = await response.json();
-
-      // Update the filtered products
-      setFilteredProducts(data);
-
-      // Reset error state
+  
+      if (Array.isArray(data) && data.length === 0) {
+        // No products found
+        setFilteredProducts([]);
+      } else {
+        // Products found
+        setFilteredProducts(data);
+      }
+  
       setError(null);
     } catch (error) {
-      setError('An error occurred while fetching data.');
+      // Handle the error if needed
+      setFilteredProducts([]);
+      // setError('An error occurred while fetching data.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     // Cleanup the debounced function on component unmount
@@ -123,10 +135,10 @@ const Products = () => {
             </p>
         </Box><br></br>
         {loading && (
-          <div style={{ textAlign: 'center' }}>
+           <div style={{ textAlign: 'center' }}>
             <CircularProgress />
             <Typography>Loading Products</Typography>
-          </div>
+          </div> 
         )}
 
         {error && (
@@ -135,17 +147,21 @@ const Products = () => {
           </div>
         )}
 
-        {filteredProducts.length === 0 && !loading && !error && (
-          <p>No products found <span role="img" aria-label="Dissatisfied">😟</span></p>
-        )}
+      {(searchQuery ? filteredProducts : products).length === 0 && !loading && !error && (
+        <p>
+          No products found <span role="img" aria-label="Dissatisfied">😟</span>
+        </p>
+      )}  
 
+      {(!loading && !error && (searchQuery ? filteredProducts : products).length > 0) && (
         <Grid container spacing={2}>
-          {filteredProducts.map((product) => (
+          {(searchQuery ? filteredProducts : products).map((product) => (
             <Grid item xs={12} md={3} key={product._id}>
-              <ProductCard productData={product} />
+              <ProductCard product={product} />
             </Grid>
           ))}
-        </Grid><br></br>
+        </Grid>
+      )}<br></br>
       <Footer />
     </div>
   );

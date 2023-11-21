@@ -1,44 +1,35 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { Card, CardContent, CardMedia, Typography, Button, Rating, CardActions } from '@mui/material';
+import { AddShoppingCartOutlined } from "@mui/icons-material";
 
-const ProductCard = ({ productData }) => {
-  const { name, category, cost, rating, image } = productData;
+const ProductCard = ({ product}) => {
+  // const { name, category, cost, rating, image } = productData;
 
   const handleAddToCart = () => {
     // Implement the logic to add the product to the cart
-    console.log(`Product added to cart: ${name}`);
+    console.log(`Product added to cart:`);
   };
 
   return (
-    <Card>
-      <CardMedia
-        component="img"
-        alt={name}
-        height="140"
-        image={image}
-      />
+    <Card className="card">
+      <CardMedia component="img" alt={product.name} src={product.image} />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {name}
+        <Typography>{product.name}</Typography>
+        <Typography paddingY="0.5rem" fontWeight="700">
+          ${product.cost}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Category: {category}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Cost: ${cost}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Rating: {rating}
-        </Typography>
-        <Button
-          variant="contained"
-          endIcon={<AddShoppingCartIcon />}
-          onClick={handleAddToCart}
-        >
-          Add to Cart
-        </Button>
+        <Rating
+          name="read-only"
+          value={product.rating}
+          precision={0.5}
+          readOnly
+        />
       </CardContent>
+      <CardActions>
+        <Button className="card-button" fullWidth variant="contained" startIcon={<AddShoppingCartOutlined />} onClick={handleAddToCart} >
+            Add to cart
+        </Button>
+      </CardActions>
     </Card>
   );
 };
