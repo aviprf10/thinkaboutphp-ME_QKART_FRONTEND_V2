@@ -8,7 +8,7 @@ import { Button, IconButton, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import "./Cart.css";
+// import "./Cart.css";
 
 // Definition of Data Structures used
 /**

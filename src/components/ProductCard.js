@@ -1,33 +1,38 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Button, Rating, CardActions } from '@mui/material';
 import { AddShoppingCartOutlined } from "@mui/icons-material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Rating,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import "./ProductCard.css";
 
-const ProductCard = ({ product}) => {
-  // const { name, category, cost, rating, image } = productData;
-
-  const handleAddToCart = () => {
-    // Implement the logic to add the product to the cart
-    console.log(`Product added to cart:`);
-  };
-
+const ProductCard = ({ product, handleAddToCart }) => {
   return (
     <Card className="card">
-      <CardMedia component="img" alt={product.name} src={product.image} />
+      <CardMedia component="img" image={product.image} alt={product.name} />
       <CardContent>
         <Typography>{product.name}</Typography>
         <Typography paddingY="0.5rem" fontWeight="700">
           ${product.cost}
         </Typography>
-        <Rating
-          name="read-only"
-          value={product.rating}
-          precision={0.5}
-          readOnly
-        />
+        {/* <Rating name="read-only" value={product.rating} /> */}
+        <Rating name="half-rating stars" value={product.rating} readOnly />
       </CardContent>
+
       <CardActions>
-        <Button className="card-button" fullWidth variant="contained" startIcon={<AddShoppingCartOutlined />} onClick={handleAddToCart} >
-            Add to cart
+        <Button
+          className="card-button"
+          fullWidth
+          variant="contained"
+          startIcon={<AddShoppingCartOutlined />}
+          onClick={handleAddToCart}
+        >
+          Add to cart
         </Button>
       </CardActions>
     </Card>

@@ -34,7 +34,7 @@ const Register = () => {
       }
       // Make your Axios POST request here
       const response = await axios.post(`${config.endpoint}/auth/register`, formObj);
-      console.log('response', response);
+      // console.log('response', response);
       if (response.status === 201) {
         // Registration successful
         enqueueSnackbar('Registered successfully', { variant: 'success' });
