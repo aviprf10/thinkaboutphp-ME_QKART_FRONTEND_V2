@@ -22,7 +22,6 @@ ReactDOM.render(
         >
           <App />
         </SnackbarProvider>
-      {/* </ThemeProvider> */}
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
