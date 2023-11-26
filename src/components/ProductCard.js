@@ -11,7 +11,11 @@ import {
 import React from "react";
 import "./ProductCard.css";
 
-const ProductCard = ({ product, handleAddToCart }) => {
+const ProductCard = ({ product, addToCart }) => {
+  const handleAddToCartClick = () => {
+    // Call the addToCart function with the product's ID
+    addToCart(product._id);
+  };
   return (
     <Card className="card">
       <CardMedia component="img" image={product.image} alt={product.name} />
@@ -30,8 +34,7 @@ const ProductCard = ({ product, handleAddToCart }) => {
           fullWidth
           variant="contained"
           startIcon={<AddShoppingCartOutlined />}
-          onClick={handleAddToCart}
-        >
+          onClick={handleAddToCartClick}>
           Add to cart
         </Button>
       </CardActions>

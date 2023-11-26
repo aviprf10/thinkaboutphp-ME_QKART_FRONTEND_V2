@@ -1,89 +1,12 @@
+import React from "react";
+import { Box, IconButton, Stack, Button } from "@mui/material";
 import {
-  AddOutlined,
   RemoveOutlined,
-  ShoppingCart,
+  AddOutlined,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
-import { Button, IconButton, Stack } from "@mui/material";
-import { Box } from "@mui/system";
-import React from "react";
+import ItemQuantity from './ItemQuantity';
 import { useHistory } from "react-router-dom";
-// import "./Cart.css";
-
-// Definition of Data Structures used
-/**
- * @typedef {Object} Product - Data on product available to buy
- * 
- * @property {string} name - The name or title of the product
- * @property {string} category - The category that the product belongs to
- * @property {number} cost - The price to buy the product
- * @property {number} rating - The aggregate rating of the product (integer out of five)
- * @property {string} image - Contains URL for the product image
- * @property {string} _id - Unique ID for the product
- */
-
-/**
- * @typedef {Object} CartItem -  - Data on product added to cart
- * 
- * @property {string} name - The name or title of the product in cart
- * @property {string} qty - The quantity of product added to cart
- * @property {string} category - The category that the product belongs to
- * @property {number} cost - The price to buy the product
- * @property {number} rating - The aggregate rating of the product (integer out of five)
- * @property {string} image - Contains URL for the product image
- * @property {string} productId - Unique ID for the product
- */
-
-/**
- * Returns the complete data on all products in cartData by searching in productsData
- *
- * @param { Array.<{ productId: String, qty: Number }> } cartData
- *    Array of objects with productId and quantity of products in cart
- * 
- * @param { Array.<Product> } productsData
- *    Array of objects with complete data on all available products
- *
- * @returns { Array.<CartItem> }
- *    Array of objects with complete data on products in cart
- *
- */
-export const generateCartItemsFrom = (cartData, productsData) => {
-};
-
-/**
- * Get the total value of all products added to the cart
- *
- * @param { Array.<CartItem> } items
- *    Array of objects with complete data on products added to the cart
- *
- * @returns { Number }
- *    Value of all items in the cart
- *
- */
-export const getTotalCartValue = (items = []) => {
-};
-
-
-/**
- * Component to display the current quantity for a product and + and - buttons to update product quantity on cart
- * 
- * @param {Number} value
- *    Current quantity of product in cart
- * 
- * @param {Function} handleAdd
- *    Handler function which adds 1 more of a product to cart
- * 
- * @param {Function} handleDelete
- *    Handler function which reduces the quantity of a product in cart by 1
- * 
- * 
- */
-const ItemQuantity = ({
-  value,
-  handleAdd,
-  handleDelete,
-}) => {
-};
 
 /**
  * Component to display the Cart view
@@ -94,16 +17,23 @@ const ItemQuantity = ({
  * @param { Array.<Product> } items
  *    Array of objects with complete data on products in cart
  * 
- * @param {Function} handleDelete
- *    Current quantity of product in cart
- * 
+ * @param {Function} handleQuantity
+ *    Handler function to update the quantity of a product in the cart
  * 
  */
-const Cart = ({
-  products,
-  items = [],
-  handleQuantity,
-}) => {
+
+
+ export const getTotalCartValue = (items = []) => {
+  return items.reduce((total, item) => total + item.cost * item.qty, 0);
+};
+
+
+
+const Cart = ({ products, items = [], handleQuantity, addToCart }) => {
+  const history = useHistory();
+  // const handleQuantity = (productId, newQuantity) => {
+  //   console.log('Hii');
+  // };  
 
   if (!items.length) {
     return (
@@ -119,6 +49,39 @@ const Cart = ({
   return (
     <>
       <Box className="cart">
+        {items.map((item) => (
+        <Box key={item.productId} display="flex" alignItems="flex-start" padding="1rem">
+          <Box className="image-container">
+            <img
+              src={item.image} 
+              alt={item.name}
+              width="100%"
+              height="100%"
+            />
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="6rem"
+            paddingX="1rem"
+          >
+            <div>{item.name}</div>  {/* Render product name */}
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <ItemQuantity
+                quantity={item.qty}
+                onDecrease={() => handleQuantity(item.productId, item.qty - 1)}
+                onIncrease={() => handleQuantity(item.productId, item.qty + 1)}
+              />
+              <Box padding="0.5rem" fontWeight="700">
+                ${item.cost * item.qty}  {/* Calculate and render total cost for the product */}
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+))}
+
+
         <Box
           padding="1rem"
           display="flex"
@@ -138,8 +101,15 @@ const Cart = ({
             ${getTotalCartValue(items)}
           </Box>
         </Box>
-
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => history.push("/checkout")}
+        >
+          Checkout
+        </Button>
       </Box>
+      
     </>
   );
 };

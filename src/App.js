@@ -5,6 +5,7 @@ import theme from './theme';
 import Register from './components/Register';
 import Login from './components/Login';
 import Products from './components/Products';
+import Checkout from './components/Checkout';
 import ipConfig from './ipConfig.json';
 
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/" exact component={Products} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
+            <Route path="/checkout" component={Checkout} />
             {/* Add more routes as needed */}
           </Switch>
         </Router>

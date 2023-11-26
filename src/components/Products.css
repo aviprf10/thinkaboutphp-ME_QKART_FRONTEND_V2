@@ -70,3 +70,38 @@
     display: block !important;
   }
 }
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cartContainer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* Media query for "md" devices and above */
+@media (min-width: 768px) {
+  .cartContainer {
+    width: 25%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+.productsContainer {
+  width: 100%;
+}
+
+/* Media query for "md" devices and above */
+@media (min-width: 768px) {
+  .productsContainer {
+    width: 75%;
+  }
+}
