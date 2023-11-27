@@ -24,8 +24,14 @@ import { useHistory } from "react-router-dom";
 
 
  export const getTotalCartValue = (items = []) => {
-  return items.reduce((total, item) => total + item.cost * item.qty, 0);
-};
+  return items.reduce((total, item) => {
+      if (item.qty !== undefined && item.qty !== null) {
+        return total + item.cost * item.qty;
+      }
+      return total;
+    }, 0);
+  };
+
 
 
 
@@ -49,39 +55,43 @@ const Cart = ({ products, items = [], handleQuantity, addToCart }) => {
   return (
     <>
       <Box className="cart">
-        {items.map((item) => (
-        <Box key={item.productId} display="flex" alignItems="flex-start" padding="1rem">
-          <Box className="image-container">
-            <img
-              src={item.image} 
-              alt={item.name}
-              width="100%"
-              height="100%"
-            />
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            height="6rem"
-            paddingX="1rem"
-          >
-            <div>{item.name}</div>  {/* Render product name */}
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <ItemQuantity
-                quantity={item.qty}
-                onDecrease={() => handleQuantity(item.productId, item.qty - 1)}
-                onIncrease={() => handleQuantity(item.productId, item.qty + 1)}
-              />
-              <Box padding="0.5rem" fontWeight="700">
-                ${item.cost * item.qty}  {/* Calculate and render total cost for the product */}
+        {items.map((item) => {
+          // Check if item.qty exists before rendering
+          if (item.qty !== undefined && item.qty !== null) {
+            return (
+              <Box key={item.productId} display="flex" alignItems="flex-start" padding="1rem">
+                <Box className="image-container">
+                  <img
+                    src={item.image} 
+                    alt={item.name}
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  height="6rem"
+                  paddingX="1rem"
+                >
+                  <div>{item.name}</div>  {/* Render product name */}
+                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <ItemQuantity
+                      quantity={item.qty}
+                      onDecrease={() => handleQuantity(item.productId, item.qty - 1)}
+                      onIncrease={() => handleQuantity(item.productId, item.qty + 1)}
+                    />
+                    <Box padding="0.5rem" fontWeight="700">
+                      ${item.cost * item.qty}  {/* Calculate and render the total cost for the product */}
+                    </Box>
+                  </Box>
+                </Box>
               </Box>
-            </Box>
-          </Box>
-        </Box>
-))}
-
-
+            );
+          }
+        })}
+  
         <Box
           padding="1rem"
           display="flex"
@@ -109,9 +119,9 @@ const Cart = ({ products, items = [], handleQuantity, addToCart }) => {
           Checkout
         </Button>
       </Box>
-      
     </>
   );
+  
 };
 
 export default Cart;
