@@ -167,12 +167,20 @@ const Products = () => {
 
       if (isItemInCart(productId)) {
         // Product is already in the cart, show a warning
-        console.log("Item already in cart. Use the cart sidebar to update quantity or remove item.");
-        return;
+        enqueueSnackbar(
+          "Item already in cart. Use the cart sidebar to update quantity or remove item.",
+          { variant: "warning" }
+        );
+        return; 
+      }
+
+      const obj = {
+        "productId":productId,
+        "qty":1
       }
       const response = await axios.post(
         `${config.endpoint}/cart`,
-        { productId },
+        obj,
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -184,11 +192,13 @@ const Products = () => {
       console.log('Product added to cart:', response.data);
   
       // Update the cart items state
-      const updatedCart = [...cartItems, response.data];
+      const updatedCart = [...cartItems, response.data]; 
       setCartItems(updatedCart);
   
       // Update local storage
       localStorage.setItem('cart', JSON.stringify(updatedCart));
+      setCartItems(updatedCart);
+      enqueueSnackbar("Product added to cart", { variant: "success" });
     } catch (error) {
       //console.error('Error adding to cart:', error);
       // Handle errors
@@ -340,7 +350,7 @@ const Products = () => {
                 </Box>
               </Grid>
             </Grid>
-            <br />
+            <br /> 
             {loading ? (
               <Box className="loading">
               <CircularProgress />

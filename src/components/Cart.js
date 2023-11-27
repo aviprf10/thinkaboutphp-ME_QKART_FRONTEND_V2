@@ -81,6 +81,7 @@ const Cart = ({ products, items = [], handleQuantity, addToCart }) => {
                       quantity={item.qty}
                       onDecrease={() => handleQuantity(item.productId, item.qty - 1)}
                       onIncrease={() => handleQuantity(item.productId, item.qty + 1)}
+                      addToCart={() => addToCart(item.productId, 1)}
                     />
                     <Box padding="0.5rem" fontWeight="700">
                       ${item.cost * item.qty}  {/* Calculate and render the total cost for the product */}
