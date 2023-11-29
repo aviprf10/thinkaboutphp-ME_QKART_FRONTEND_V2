@@ -11,31 +11,28 @@ import {
 import React from "react";
 import "./ProductCard.css";
 
-const ProductCard = ({ product, addToCart }) => {
-  const handleAddToCartClick = () => {
-    // Call the addToCart function with the product's ID
-    addToCart(product._id);
-  };
+const ProductCard = ({
+  product,
+  handleAddToCart,
+}) => {
   return (
     <Card className="card">
-      <CardMedia component="img" image={product.image} alt={product.name} />
+      <CardMedia component="img" alt={product.name} src={product.image} />
       <CardContent>
         <Typography>{product.name}</Typography>
         <Typography paddingY="0.5rem" fontWeight="700">
           ${product.cost}
         </Typography>
-        {/* <Rating name="read-only" value={product.rating} /> */}
-        <Rating name="half-rating stars" value={product.rating} readOnly />
+        <Rating
+          name="read-only"
+          value={product.rating}
+          precision={0.5}
+          readOnly
+        />
       </CardContent>
-
       <CardActions>
-        <Button
-          className="card-button"
-          fullWidth
-          variant="contained"
-          startIcon={<AddShoppingCartOutlined />}
-          onClick={handleAddToCartClick}>
-          Add to cart
+        <Button className="card-button" fullWidth variant="contained" startIcon={<AddShoppingCartOutlined />} onClick={handleAddToCart} >
+            Add to cart
         </Button>
       </CardActions>
     </Card>
