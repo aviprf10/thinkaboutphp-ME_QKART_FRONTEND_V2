@@ -6,6 +6,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Products from './components/Products';
 import Checkout from './components/Checkout';
+import Thanks from './components/Thanks';
 import ipConfig from './ipConfig.json';
 
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/checkout" component={Checkout} />
+            <Route path="/thanks" component={Thanks} />
             {/* Add more routes as needed */}
           </Switch>
         </Router>

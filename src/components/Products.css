@@ -103,5 +103,6 @@
 @media (min-width: 768px) {
   .productsContainer {
     width: 75%;
+    float: left;
   }
 }

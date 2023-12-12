@@ -255,7 +255,7 @@ const Products = () => {
         );
       }
     }
-    console.log("Added to cart", productId);
+    // console.log("Added to cart", productId);
   };
 
   // const handleQuantity = (productId, newQuantity) => {
@@ -348,7 +348,7 @@ const Products = () => {
             </Grid>
           )}
         </div>  
-        <Grid item xs={12} md={3} bg="#E9F5E1">
+        <Grid item  bg="#E9F5E1">
           <Cart products={products} items={cartItems} handleQuantity={addToCart} />
         </Grid>
   
@@ -396,49 +396,49 @@ const Products = () => {
           />
           
           <Grid container>
-        <Grid item className="product-grid" md={userToken ? 9 : 12}>
-          <Grid container>
-            <Grid item className="product-grid" padding={"1rem"}>
-              <Box className="hero">
-                <p className="hero-heading">
-                  India’s{" "}
-                  <span className="hero-highlight">FASTEST DELIVERY</span> to
-                  your door step
-                </p>
-              </Box>
-            </Grid>
-            {loading ? (
-              <Box className="loading">
-                <CircularProgress />
-                <h4>Loading Products...</h4>
-              </Box>
-            ) : (
-              <Grid container marginY="1rem" paddingX="1rem" spacing={2}>
-                {filteredProducts.length ? (
-                  filteredProducts.map((product) => (
-                    <Grid item xs={6} md={3} key={product._id}>
-                      <ProductCard
-                        product={product}
-                        handleAddToCart={async () => {
-                          await addToCart(userToken, cartItems, product._id, products, 1, {preventDuplicate : true});
-                        }}
-                      />
-                    </Grid>
-                  ))
-                ) : (
-                  <Box className="loading">
-                    <SentimentDissatisfied color="action" />
-                    <h4 style={{ color: "#636363 " }}>No products found</h4>
+            <Grid item className="product-grid" md={userToken ? 9 : 12}>
+              <Grid container>
+                <Grid item className="product-grid" padding={"1rem"}>
+                  <Box className="hero">
+                    <p className="hero-heading">
+                      India’s{" "}
+                      <span className="hero-highlight">FASTEST DELIVERY</span> to
+                      your door step
+                    </p>
                   </Box>
+                </Grid>
+                {loading ? (
+                  <Box className="loading">
+                    <CircularProgress />
+                    <h4>Loading Products...</h4>
+                  </Box>
+                ) : (
+                  <Grid container marginY="1rem" paddingX="1rem" spacing={2}>
+                    {filteredProducts.length ? (
+                      filteredProducts.map((product) => (
+                        <Grid item xs={6} md={3} key={product._id}>
+                          <ProductCard
+                            product={product}
+                            handleAddToCart={async () => {
+                              await addToCart(userToken, cartItems, product._id, products, 1, {preventDuplicate : true});
+                            }}
+                          />
+                        </Grid>
+                      ))
+                    ) : (
+                      <Box className="loading">
+                        <SentimentDissatisfied color="action" />
+                        <h4 style={{ color: "#636363 " }}>No products found</h4>
+                      </Box>
+                    )}
+                  </Grid>
                 )}
               </Grid>
-            )}
           </Grid>
-        </Grid>
 
         {/* <ProductCard /> */}
         {userToken ? (
-          <Grid item xs={12} md={3} bg="#E9F5E1">
+          <Grid item  bg="#E9F5E1">
             <Cart products={products} items={cartItems} handleQuantity={addToCart}/>
           </Grid>
         ) : null}

@@ -31,24 +31,24 @@ import "./Cart.css";
     ...item,
     ...productsData.find((product) => item.productId === product._id),
   }));
-  console.log(nextCart);
+  // console.log(nextCart);
   return nextCart;
 };
 
- export const getTotalCartValue = (items = []) => {
-  // return items.reduce((total, item) => {
-  //     if (item.qty !== undefined && item.qty !== null) {
-  //       return total + item.cost * item.qty;
-  //     }
-  //     return total;
-  //   }, 0);
+export const getTotalCartValue = (items = []) => {
   if (!items.length) return 0;
-  const total = items
-    .map((item) => item.cost * item.qty)
-    .reduce((total, n) => total + n);
 
-  return total; 
-  };
+  const total = items
+    .map((item) => {
+      const cost = typeof item.cost === 'number' ? item.cost : 0;
+      const qty = typeof item.qty === 'number' ? item.qty : 0;
+      return cost * qty;
+    })
+    .reduce((total, n) => total + n, 0);
+
+  return total;
+};
+
 
   const ItemQuantity = ({ value, handleAdd, handleDelete, isReadOnly = false }) => {
     if(isReadOnly){
@@ -70,7 +70,7 @@ import "./Cart.css";
   };
 
 
-const Cart = ({ products, items = [], handleQuantity }) => {
+const Cart = ({ products, items = [], handleQuantity, isReadOnly = false  }) => {
   // const handleQuantity = (productId, newQuantity) => {
   //   console.log('Hii');
   // };  
@@ -127,7 +127,7 @@ const Cart = ({ products, items = [], handleQuantity }) => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <ItemQuantity value={item.qty}
+                <ItemQuantity  isReadOnly={isReadOnly} value={item.qty}
                 // Add required props by checking implementation
                 handleAdd = {() => {
                   handleQuantity(
