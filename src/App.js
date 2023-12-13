@@ -12,7 +12,7 @@ import ipConfig from './ipConfig.json';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 
 export const config = {
-  endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
+  endpoint: `https://qkart-frontend-kkj4.onrender.com/api/v1`,
 };
 
 const App = () => {
